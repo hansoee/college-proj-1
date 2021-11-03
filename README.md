@@ -1,2 +1,2 @@
 # prg-1
-my college projects
+drop my college projects here so that they will be accessible through any devices of mine
