@@ -1,6 +1,4 @@
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
 using namespace std;
 
 void swap(int &data1, int &data2){
