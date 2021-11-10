@@ -21,6 +21,15 @@ void addBook(){                  //create a txt file and write book data in it
 void deleteBook();
 void editBook();
 
+void addRack(){                  //bikin file txt trs write data book disitu
+    fstream rack;
+    rack.open("mybooks.txt", ios::app);        //buku di rak user (yg dipinjem)
+    rack<<bookdata.judul<<"\n";             // '<<' masukkan data buku ke txt
+    rack<<bookdata.penulis<<"\n";
+    rack<<bookdata.tahun<<"\n";
+    rack.close();
+}
+
 void searchBook(){            //ONE STRING INPUT
     string st1;
     cout<<"\nJudul buku yang dicari: ";
@@ -38,6 +47,7 @@ void searchBook(){            //ONE STRING INPUT
                 cout<<"Judul    \t: "<<bookdata.judul<<endl;
                 cout<<"Penulis  \t: "<<bookdata.penulis<<endl;
                 cout<<"Tahun Terbit \t: "<<bookdata.tahun<<endl;
+                addRack();
                 sbook>>bookdata.judul;                  //inisiasi data buku dari txt u break
                 sbook>>bookdata.penulis;
                 sbook>>bookdata.tahun;   
@@ -50,15 +60,7 @@ void searchBook(){            //ONE STRING INPUT
 void borrowBook();
 void returnBook();
 
-void addRack(){                  //bikin file txt trs write data book disitu
-    fstream rack;
-    
-    rack.open("mybooks.txt", ios::app);        //buku di rak user (yg dipinjem)
-    rack<<bookdata.judul<<"\n";             // '<<' masukkan data buku ke txt
-    rack<<bookdata.penulis<<"\n";
-    rack<<bookdata.tahun<<"\n";
-    rack.close();
-}
+
 
 void displayRack(){                 
     ifstream dRack;
@@ -143,7 +145,6 @@ int main(){
                 break;
             }
             cout<<"Pinjam buku ini?";
-            addRack();
             break;}
         case 3:
             //returnBook();
