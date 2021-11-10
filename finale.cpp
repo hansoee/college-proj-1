@@ -30,10 +30,10 @@ void searchBook(){            //ONE STRING INPUT
     ifstream sbook;
     sbook.open("buku.txt");
     while(!sbook.eof()){
-            sbook>>bookdata.judul;                  //inisiasi data buku dari txt
+            sbook>>bookdata.judul;                  //baca data buku dari txt
             sbook>>bookdata.penulis;
             sbook>>bookdata.tahun;
-    }       
+           
             if(bookdata.judul==st1){
                 cout<<"\n--------------------- Book Found! ---------------------"<<endl;
                 cout<<"Judul    \t: "<<bookdata.judul<<endl;
@@ -41,12 +41,11 @@ void searchBook(){            //ONE STRING INPUT
                 cout<<"Tahun Terbit \t: "<<bookdata.tahun<<endl;
                 sbook>>bookdata.judul;                  //inisiasi data buku dari txt
                 sbook>>bookdata.penulis;
-                sbook>>bookdata.tahun;
-                
+                sbook>>bookdata.tahun;   
             }
             else cout<<"no"; 
-        
-    
+    }
+    sbook.close();
 }
 
 void borrowBook();
@@ -182,7 +181,7 @@ int main(){
         librarian:
         int libchoice;
         cout<<"\n----------- Selamat Datang di Perpustakaan Online! -----------\n";
-        cout<<"1. Cari Buku\n"<<"2. Lihat Semua Buku"<<"3. Tambah Buku\n"<<"4. Hapus Buku\n"<<"5. Edit Buku\n"<<"6. Ganti Peran\n"<<"7. Keluar\n";
+        cout<<"1. Cari Buku\n"<<"2. Lihat Semua Buku\n"<<"3. Tambah Buku\n"<<"4. Hapus Buku\n"<<"5. Edit Buku\n"<<"6. Ganti Peran\n"<<"7. Keluar\n";
         cout<<"--------------------------------------------------------------\n";
         cout<<"Pilihan Anda: "; cin>>libchoice;
         switch (libchoice)
