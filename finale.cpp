@@ -26,7 +26,6 @@ void searchBook(){            //ONE STRING INPUT
     cout<<"\nJudul buku yang dicari: ";
     cin>>st1;
     string line;
-    int temp=0;
     ifstream sbook;
     sbook.open("buku.txt");
     while(!sbook.eof()){
@@ -39,7 +38,7 @@ void searchBook(){            //ONE STRING INPUT
                 cout<<"Judul    \t: "<<bookdata.judul<<endl;
                 cout<<"Penulis  \t: "<<bookdata.penulis<<endl;
                 cout<<"Tahun Terbit \t: "<<bookdata.tahun<<endl;
-                sbook>>bookdata.judul;                  //inisiasi data buku dari txt
+                sbook>>bookdata.judul;                  //inisiasi data buku dari txt u break
                 sbook>>bookdata.penulis;
                 sbook>>bookdata.tahun;   
             }
@@ -59,12 +58,6 @@ void addRack(){                  //bikin file txt trs write data book disitu
     rack<<bookdata.penulis<<"\n";
     rack<<bookdata.tahun<<"\n";
     rack.close();
-
-    rack.seekp(0, ios::end);
-    int spot = rack.tellg();
-        if( spot == 0){
-            cout << "Empty file\n";
-        }
 }
 
 void displayRack(){                 
@@ -129,19 +122,9 @@ int main(){
         switch (userchoice)
         {
         case 1:
-            //searchBook();
+            searchBook();
             break;
-        case 2:
-            //borrowBook();
-            break;
-        case 3:
-            //returnBook();
-            break;
-        case 4:
-            cout<<"\n";
-            displayBook();
-            break;
-        case 5:{
+        case 2:{
             cout<<"Cari Buku yang akan dipinjam dengan filter: \n";
             cout<<"1. Judul\n"<<"2. Penulis\n"<<"3. Tahun\n";
             int pil;
@@ -159,8 +142,18 @@ int main(){
             default:
                 break;
             }
-            //searchBook();
+            cout<<"Pinjam buku ini?";
             addRack();
+            break;}
+        case 3:
+            //returnBook();
+            break;
+        case 4:
+            cout<<"\n";
+            displayBook();
+            break;
+        case 5:{
+            displayRack();
             break;
         }
         case 6:
@@ -187,7 +180,7 @@ int main(){
         switch (libchoice)
         {
         case 1:
-            //searchBook();
+            searchBook();
             break;
         case 2:
             cout<<"\n";
