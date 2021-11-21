@@ -58,12 +58,12 @@ void editBook(){
     ebook.close();
 }
 
-void addRack(string title){                  //bikin file txt trs write data book disitu
+void addRack(string from, string to, string title){                  //bikin file txt trs write data book disitu
     bool n=true;
     fstream rack;
     fstream sbook;
-    sbook.open("buku.txt");
-    rack.open("mybooks.txt", ios::app);
+    sbook.open(from);
+    rack.open(to, ios::app);
     while(!rack.eof()){
         getline(sbook,bookdata.judul);                
         getline(sbook,bookdata.penulis);
@@ -83,12 +83,11 @@ void addRack(string title){                  //bikin file txt trs write data boo
     sbook.close();
 }
 
-void searchTitle(string title){             //aku bikin 3 fungsi berdasarkan filter soalnya kl pake if atau case error:(
+void searchTitle(string path, string title){             //aku bikin 3 fungsi berdasarkan filter soalnya kl pake if atau case error:(
     bool n = true;
     int m = 0;
-    searchMenu:
     ifstream sbook;
-    sbook.open("buku.txt");
+    sbook.open(path);
     while(!sbook.eof()){
             getline(sbook,bookdata.judul);       //getline : buat masukin kalimat satu baris di sbook ke bookdata.judul         
             getline(sbook,bookdata.penulis);
@@ -177,7 +176,7 @@ void searchFilter(){
             cin.ignore(); //biar ga error kalo pake getline >1 kali
             cout<<"\nJudul buku yang dicari: ";
             getline(cin,t);
-            searchTitle(t);
+            searchTitle("buku.txt", t);
             break;
         case 2:
             cin.ignore();
@@ -191,7 +190,7 @@ void searchFilter(){
             searchYear(y);
             break;
         default:
-        cout<<"wrong input\n";
+            cout<<"wrong input\n";
             break;
         } 
 }
@@ -210,7 +209,6 @@ void hapus(string path, string eraseTitle) {
         bin>>bookdata.tahun;
         //write semua baris kecuali baris yg mau dihapus ke file temp.txt
         if (bookdata.judul != eraseTitle /*&& bookdata.penulis != eraseAuthor && bookdata.tahun != eraseYear*/){
-            
             temp << bookdata.judul << endl;
             temp << bookdata.penulis << endl;
             temp << bookdata.tahun << endl;
@@ -241,7 +239,7 @@ void deleteBook(){
         cin.ignore();
         cout<<"Judul buku: ";
         getline(cin,titleDelete);
-        searchTitle(titleDelete);
+        searchTitle("buku.txt",titleDelete);
         cout<<"Hapus buku ini? [1 (ya) / 0 (tidak)]"; cin>>del;
         if(del==1){
             hapus("buku.txt", titleDelete);
@@ -284,7 +282,7 @@ void editFilter(){
             cin.ignore();
             cout<<"\nJudul buku yang dicari: ";
             getline(cin,titleEdit);
-            searchTitle(titleEdit);
+            searchTitle("buku.txt", titleEdit);
             editBook();
         }
             break;
@@ -326,8 +324,8 @@ void borrowBook()
         cin.ignore(); //biar ga error kalo pake getline >1 kali
         cout << "\nJudul buku yang dicari: ";
         getline(cin, t);
-        searchTitle(t);
-        addRack(t);
+        searchTitle("buku.txt", t);
+        addRack("buku.txt", "mybooks.txt", t);
         hapus("buku.txt", t);
         break;
     case 2:
@@ -353,11 +351,11 @@ void returnBook()                 //Belum jadi ges
 {
     string titleDelete, authorDelete; //sori gais msi nyari cara :pray_hands:
     int choice, yearDelete;
-deleteMenu:
+    deleteMenu:
     ifstream mybooks;
     ofstream bin;              //buat tempat buang data
     int del;
-    cout << "Cari buku untuk dihapus berdasarkan filter\n";
+    cout << "Cari buku yang akan dikembalikan berdasarkan filter\n";
     cout << "1: Judul, 2: Penulis, 3: Tahun terbit, 4: Kembali, 5: Keluar\n";
     cin >> choice;
     switch (choice) {
@@ -365,9 +363,10 @@ deleteMenu:
         cin.ignore();
         cout << "Judul buku: ";
         getline(cin, titleDelete);
-        searchTitle(titleDelete);
-        cout << "Hapus buku ini? [1 (ya) / 0 (tidak)]: "; cin >> del;
+        searchTitle("mybooks.txt", titleDelete);
+        cout << "Kembalikan buku ini? [1 (ya) / 0 (tidak)]: "; cin >> del;
         if (del == 1) {
+            addRack("mybooks.txt", "buku.txt", titleDelete);
             hapus("mybooks.txt", titleDelete);
         }
         break;
@@ -376,7 +375,7 @@ deleteMenu:
         cout << "Nama penulis: ";
         getline(cin, authorDelete);
         searchAuthor(authorDelete);
-        cout << "Hapus buku ini? [1 (ya) / 0 (tidak)]: "; cin >> del;
+        cout << "Kembalikan buku ini? [1 (ya) / 0 (tidak)]: "; cin >> del;
         if (del == 1) {
             hapus("mybooks.txt", authorDelete);
         }
@@ -385,7 +384,7 @@ deleteMenu:
         cout << "Tahun terbit: ";
         cin >> yearDelete;
         searchYear(yearDelete);
-        cout << "Hapus buku ini? [1 (ya) / 0 (tidak)]: "; cin >> del;
+        cout << "Kembalikan buku ini? [1 (ya) / 0 (tidak)]: "; cin >> del;
         if (del == 1) {
             hapus("mybooks.txt", authorDelete);
         }
@@ -545,7 +544,7 @@ int main(){
     else if(choice==2){
         system("cls");
         librarian:
-        int libchoice;
+        int libchoice, inp;
         cout<<"--------------------------------------------------------------\n";
         cout<<"                  Selamat Datang, Pustakawan!                 \n";
         cout<<"--------------------------------------------------------------\n";
@@ -555,7 +554,15 @@ int main(){
         switch (libchoice)
         {
         case 1:
+            searchp:
+            system("cls");
             searchFilter();
+            cout<<"Apakah Anda ingin mencari buku lagi? [1 (ya) / 0 (tidak)] "; cin>>inp;
+            if (inp) goto searchp;
+            else {
+                system("cls");
+                goto user;
+            }
             break;
         case 2:
             cout<<"\n";
